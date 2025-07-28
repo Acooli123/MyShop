@@ -1,6 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
 function Navbar() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/product?search=${encodeURIComponent(searchQuery)}`);
+      setSearchQuery(""); // Clear input after navigating
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg bg-body-tertiary bg-light fixed-top">
       <div className="container-fluid">
@@ -30,8 +42,7 @@ function Navbar() {
                 Product
               </Link>
             </li>
-
-         <li className="nav-item">
+            <li className="nav-item">
               <Link to="/order" className="nav-link">
                 Order
               </Link>
@@ -42,22 +53,9 @@ function Navbar() {
               </Link>
             </li>
           </ul>
-          <form className="d-flex" role="search">
-            <input
-              className="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button className="btn btn-outline-success" type="submit">
-              Search
-            </button>
-          </form>
-          
+
         </div>
-        
       </div>
-    
     </nav>
   );
 }

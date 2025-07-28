@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 
 const Product = ({ name, price, image, description, onCartChange }) => {
   const [isAdded, setIsAdded] = useState(false);
@@ -37,6 +37,11 @@ const Product = ({ name, price, image, description, onCartChange }) => {
       date: new Date().toLocaleString(),
     };
 
+    function useQuery() {
+      return new URLSearchParams(useLocation().search);
+    }
+
+    const searchTerm = useQuery().get("search");
     const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
     existingOrders.push(order);
     localStorage.setItem("orders", JSON.stringify(existingOrders));
