@@ -37,17 +37,19 @@ const Product = ({ name, price, image, description, onCartChange }) => {
       date: new Date().toLocaleString(),
     };
 
-    function useQuery() {
-      return new URLSearchParams(useLocation().search);
-    }
-
-    const searchTerm = useQuery().get("search");
+    
     const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
     existingOrders.push(order);
     localStorage.setItem("orders", JSON.stringify(existingOrders));
 
     alert(`You have bought "${name}" for ₹${price}!`);
   };
+
+  function useQuery() {
+      return new URLSearchParams(useLocation().search);
+    }
+
+  const searchTerm = useQuery().get("search");
 
   return (
     <div className="card" style={{ width: "18rem" }}>
