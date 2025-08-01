@@ -6,7 +6,7 @@ const Product = ({ name, price, image, description, onCartChange }) => {
   const navigate = useNavigate();
 
   // Check if user is logged in
-  const isLoggedIn = !!localStorage.getItem("user");
+  const isLoggedIn = !!localStorage.getItem("users");
 
   const handleToggleCart = () => {
     if (!isLoggedIn) {
