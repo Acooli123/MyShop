@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Product = ({ name, price, image, description, onCartChange }) => {
   const [isAdded, setIsAdded] = useState(false);
+  const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
 
-  // Check if user is logged in
   const isLoggedIn = !!localStorage.getItem("token");
 
   const handleToggleCart = () => {
@@ -17,8 +17,17 @@ const Product = ({ name, price, image, description, onCartChange }) => {
 
     const newState = !isAdded;
     setIsAdded(newState);
+
+    const item = {
+      name,
+      price,
+      image,
+      description,
+      quantity,
+    };
+
     if (onCartChange) {
-      onCartChange(newState); // true = add, false = remove
+      onCartChange(newState, item); // pass item with quantity
     }
   };
 
@@ -34,20 +43,24 @@ const Product = ({ name, price, image, description, onCartChange }) => {
       price,
       image,
       description,
+      quantity,
+      totalPrice: price * quantity,
       date: new Date().toLocaleString(),
     };
 
-    
     const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
     existingOrders.push(order);
     localStorage.setItem("orders", JSON.stringify(existingOrders));
 
-    alert(`You have bought "${name}" for ₹${price}!`);
+    alert(`You have bought "${name}" (x${quantity}) for ₹${order.totalPrice}!`);
   };
 
+  const increaseQuantity = () => setQuantity((prev) => prev + 1);
+  const decreaseQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+
   function useQuery() {
-      return new URLSearchParams(useLocation().search);
-    }
+    return new URLSearchParams(useLocation().search);
+  }
 
   const searchTerm = useQuery().get("search");
 
@@ -63,6 +76,13 @@ const Product = ({ name, price, image, description, onCartChange }) => {
         <h5 className="card-title">{name}</h5>
         <p className="card-text">{description}</p>
         <p className="card-text fw-bold">₹ {price}</p>
+
+        <div className="d-flex align-items-center mb-2">
+          <button className="btn btn-sm btn-outline-secondary me-2" onClick={decreaseQuantity}>−</button>
+          <span>{quantity}</span>
+          <button className="btn btn-sm btn-outline-secondary ms-2" onClick={increaseQuantity}>+</button>
+        </div>
+
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <button
             className="btn btn-primary"
