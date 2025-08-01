@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-export default function Login() {
+export default function Signup() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
@@ -10,7 +11,7 @@ export default function Login() {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
 
-  const handleLogin = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
 
     if (!emailRegex.test(email)) {
@@ -24,22 +25,19 @@ export default function Login() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/login', {
+      const response = await fetch('http://localhost:5000/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password })
       });
 
       const data = await response.json();
 
-      if (response.ok && data.token) {
-        localStorage.setItem('token', data.token); // Store JWT
-        setMessage('✅ Login successful!');
-        setTimeout(() => {
-          navigate('/product');
-        }, 1000);
+      if (data.status === 'ok') {
+        setMessage('✅ Registration successful! Redirecting to login...');
+        setTimeout(() => navigate('/login'), 1500);
       } else {
-        setMessage(`❌ ${data.error || 'Login failed'}`);
+        setMessage(`❌ ${data.error || 'Registration failed'}`);
       }
     } catch (err) {
       setMessage('❌ Server error');
@@ -48,8 +46,19 @@ export default function Login() {
 
   return (
     <div className="container mt-5" style={{ maxWidth: '400px' }}>
-      <h2 className="text-center mb-4">Login</h2>
-      <form onSubmit={handleLogin}>
+      <h2 className="text-center mb-4">Sign Up</h2>
+      <form onSubmit={handleSignup}>
+        <div className="mb-3">
+          <label className="form-label">Full Name</label>
+          <input
+            type="text"
+            className="form-control"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+
         <div className="mb-3">
           <label className="form-label">Email address</label>
           <input
@@ -72,20 +81,13 @@ export default function Login() {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary w-100">
-          Login
+        <button type="submit" className="btn btn-success w-100">
+          Sign Up
         </button>
       </form>
 
-      <p className="mt-3 text-center">
-        Don't have an account? <a href="/signup">Sign up</a>
-      </p>
-
       {message && (
-        <div
-          className="alert mt-3"
-          style={{ color: message.includes('✅') ? 'green' : 'red' }}
-        >
+        <div className="alert mt-3" style={{ color: message.includes('✅') ? 'green' : 'red' }}>
           {message}
         </div>
       )}
