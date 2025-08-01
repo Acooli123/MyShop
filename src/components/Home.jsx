@@ -1,5 +1,5 @@
 import React from 'react'
-import myShop from '../assets/myShop.jpg'
+import myShop from '../assets/MyShop.jpg'
 
 export default function Home() {
   return (
