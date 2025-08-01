@@ -9,11 +9,11 @@ const Product = ({ name, price, image, description, onCartChange }) => {
   const isLoggedIn = !!localStorage.getItem("user");
 
   const handleToggleCart = () => {
-    // if (!isLoggedIn) {
-    //   alert("Please login to add items to your cart.");
-    //   navigate("/login");
-    //   return;
-    // }
+    if (!isLoggedIn) {
+      alert("Please login to add items to your cart.");
+      navigate("/login");
+      return;
+    }
 
     const newState = !isAdded;
     setIsAdded(newState);
@@ -23,11 +23,11 @@ const Product = ({ name, price, image, description, onCartChange }) => {
   };
 
   const handleBuyNow = () => {
-    // if (!isLoggedIn) {
-    //   alert("Please login to buy this item.");
-    //   navigate("/login");
-    //   return;
-    // }
+    if (!isLoggedIn) {
+      alert("Please login to buy this item.");
+      navigate("/login");
+      return;
+    }
 
     const order = {
       name,

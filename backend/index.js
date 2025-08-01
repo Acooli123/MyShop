@@ -17,6 +17,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/myshop', {
   useUnifiedTopology: true,
 });
 
+
 // User Schema
 const UserSchema = new mongoose.Schema({
   name: String,
