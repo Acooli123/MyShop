@@ -43,6 +43,10 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.send('Welcome to the MyShop API');
+});
+
 // Login Route
 app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
