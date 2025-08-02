@@ -25,7 +25,7 @@ export default function Signup() {
     }
 
     try {
-      const response = await fetch('https://myshop-4.onrender.com/api/register', {
+      const response = await fetch('https://myshop-5.onrender.com/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, password })
