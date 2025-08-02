@@ -9,13 +9,13 @@ require('dotenv').config(); // ⬅️ load env vars
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const JWT_SECRET = 'your_jwt_secret'; // Should be in .env
+const JWT_SECRET = process.env.JWT_SECRET; // Should be in .env
 
 app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect('mongodb://127.0.0.1:27017/myshop', {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
